@@ -1,0 +1,243 @@
+@model _66076431_natalee.Models.db.Customer
+@{
+    Layout = "_BraLayout2";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<style>
+    body {
+        background: #f5f5f5;
+        color: #212529;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .profile-card,
+    .summary-card,
+    .sidebar-card {
+        border: 1px solid #e9ecef;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.06);
+        background: #fff;
+    }
+
+    .sidebar-avatar {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        margin: 0 auto 12px;
+        background: #fff1f1;
+        color: #ed1c24;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        border: 1px solid #ffd6d6;
+    }
+
+    .sidebar-name {
+        font-weight: 700;
+        color: #212529;
+    }
+
+    .sidebar-role {
+        color: #6c757d;
+    }
+
+    .profile-menu .nav-link {
+        color: #212529;
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: .2s ease;
+    }
+
+    .profile-menu .nav-link:hover {
+        background: #fff5f5;
+        color: #ed1c24;
+    }
+
+    .profile-menu .nav-link.active {
+        background: #ffe5e5;
+        color: #c81017;
+        font-weight: 600;
+    }
+
+    .profile-menu .nav-link.text-danger:hover {
+        background: #fff1f1;
+        color: #dc3545;
+    }
+
+    .section-title {
+        font-weight: 700;
+        color: #212529;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: #ed1c24;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        border: 1px solid #ced4da;
+        padding: 10px 14px;
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border-color: #ed1c24;
+        box-shadow: 0 0 0 .2rem rgba(237, 28, 36, .12);
+    }
+
+    .btn-save-profile {
+        background: #ed1c24;
+        border: none;
+        color: #fff;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-save-profile:hover {
+        background: #c81017;
+        color: #fff;
+    }
+
+    .btn-save-profile:focus,
+    .btn-save-profile:active {
+        background: #c81017;
+        color: #fff;
+        box-shadow: 0 0 0 .2rem rgba(237,28,36,.15);
+    }
+
+    .summary-value {
+        font-weight: 700;
+    }
+
+    .summary-card small {
+        color: #6c757d;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row g-4">
+
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card sidebar-card p-3 mb-4">
+                <div class="text-center mb-3">
+                    <div class="sidebar-avatar">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <h6 class="mb-0 sidebar-name">@Model?.CusName</h6>
+                    <small class="sidebar-role">สมาชิกทั่วไป</small>
+                </div>
+                <hr />
+                <ul class="nav flex-column gap-2 profile-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Electrical" asp-action="ProfileUser">
+                            <i class="bi bi-person-circle"></i>
+                            <span>ข้อมูลส่วนตัว</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Electrical" asp-action="OrderUser">
+                            <i class="bi bi-box-seam"></i>
+                            <span>ประวัติการสั่งซื้อ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" asp-controller="Electrical" asp-action="Logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>ออกจากระบบ</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-9">
+
+            <!-- ข้อมูลส่วนตัว -->
+            <div class="card profile-card p-4 mb-4">
+                <h5 class="mb-3 section-title">
+                    <i class="bi bi-person-vcard"></i>
+                    <span>ข้อมูลส่วนตัว</span>
+                </h5>
+
+                <form asp-controller="Electrical" asp-action="ProfileUser" method="post">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">ชื่อ</label>
+                            <input type="text" name="CusName" class="form-control" value="@Model?.CusName" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">เบอร์โทร</label>
+                            <input type="text" name="CusPhoneNumber" class="form-control" value="@Model?.CusPhoneNumber" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">อีเมล</label>
+                        <input type="text" class="form-control" value="@Model?.CusrEmail" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">ที่อยู่</label>
+                        <textarea name="CusAddress" class="form-control" rows="3">@Model?.CusAddress</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-save-profile w-100">
+                        <i class="bi bi-floppy"></i>
+                        <span>บันทึกข้อมูล</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- สรุป order -->
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <div class="card summary-card text-center p-3">
+                        <h4 class="text-warning summary-value">@ViewBag.CountPending</h4>
+                        <small>ที่ต้องชำระ</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card summary-card text-center p-3">
+                        <h4 class="text-info summary-value">@ViewBag.CountShipping</h4>
+                        <small>กำลังจัดส่ง</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card summary-card text-center p-3">
+                        <h4 class="text-success summary-value">@ViewBag.CountSuccess</h4>
+                        <small>สำเร็จแล้ว</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card summary-card text-center p-3">
+                        <h4 class="text-danger summary-value">@ViewBag.CountCancel</h4>
+                        <small>ยกเลิก</small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

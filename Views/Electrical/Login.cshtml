@@ -1,0 +1,153 @@
+@model _66076431_natalee.ViewModels.LoginViewModel
+
+<style>
+    body {
+        background: linear-gradient(135deg, #fff5f5, #ffeaea);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .login-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 32px 28px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    .logo {
+    height: 90px;  
+    width: auto;   
+ }
+
+    .form-label {
+        font-weight: 600;
+        color: #222;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 10px 14px;
+        border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+        border-color: #ed1c24;
+        box-shadow: 0 0 0 0.2rem rgba(237,28,36,.15);
+    }
+
+    /* 🔴 ปุ่มแดง Makro */
+    .btn-brown {
+        background: linear-gradient(135deg, #ed1c24, #c81017);
+        border: none;
+        border-radius: 999px;
+        padding: 10px;
+        font-weight: 600;
+        transition: .2s;
+        color: #fff;
+    }
+
+    .btn-brown:hover {
+        background: linear-gradient(135deg, #c81017, #a50f14);
+    }
+
+    /* 🔴 ลิงก์ */
+    .link-brown {
+        color: #ed1c24;
+        font-weight: 500;
+    }
+
+    .link-brown:hover {
+        text-decoration: underline;
+        color: #c81017;
+    }
+
+    .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+
+        <!-- Logo -->
+        <div class="text-center mb-3">
+            <img src="~/images/Logo.png" class="logo" />
+        </div>
+
+        <h3 class="text-center mb-4 fw-bold" style="color:#5a3e2b;">
+            เข้าสู่ระบบ
+        </h3>
+
+        <form asp-controller="Electrical" asp-action="Login">
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">อีเมลผู้ใช้</label>
+                <input type="email" asp-for="Email" class="form-control" placeholder="example@email.com">
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label class="form-label">รหัสผ่าน</label>
+                <input type="password" asp-for="Password" class="form-control" placeholder="********">
+            </div>
+
+            <!-- Forgot password -->
+            <div class="text-end mb-3">
+                <a href="#" class="small link-brown" data-bs-toggle="modal" data-bs-target="#forgotModal">ลืมรหัสผ่าน?</a>
+            </div>
+
+            <!-- Button -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-brown">
+                    เข้าสู่ระบบ
+                </button>
+            </div>
+
+        </form>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+        }
+
+        <hr>
+
+        <!-- Register -->
+        <div class="text-center">
+            <span class="small">ยังไม่มีบัญชี?</span>
+            <a asp-controller="Electrical" asp-action="Register" class="link-brown">
+                สมัครสมาชิก
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal ลืมรหัสผ่าน -->
+<div class="modal fade" id="forgotModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:16px; overflow:hidden;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">ลืมรหัสผ่าน?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center px-4 pb-4">
+                <p class="text-muted mb-3">กรุณาติดต่อพนักงานเพื่อรีเซ็ตรหัสผ่าน<br>สแกน QR Code เพื่อติดต่อเรา</p>
+                <img src="~/images/qr-contact.png"
+                        onerror="this.src='https://placehold.co/200x200/f8f9fa/adb5bd?text=QR+Code'"
+                        style="width:180px; height:180px; border-radius:12px; border:1px solid #eee;" />
+                <p class="mt-3 mb-0 small text-muted">
+                    หรือโทร <strong style="color:#ed1c24;">02-XXX-XXXX</strong><br>
+                    จันทร์–อาทิตย์ 08.00–20.00 น.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

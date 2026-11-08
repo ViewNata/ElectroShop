@@ -1,0 +1,147 @@
+@model _66076431_natalee.ViewModels.RegisterViewModel
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f8f9fa, #eeeeee);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .register-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 32px 28px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 12px 30px rgba(0,0,0,.08);
+        border: 1px solid #e9ecef;
+    }
+
+    .logo {
+        height: 75px;
+    }
+
+    .title {
+        color: #ed1c24;
+        font-weight: 700;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 10px 14px;
+        border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+        border-color: #ed1c24;
+        box-shadow: 0 0 0 0.2rem rgba(237, 28, 36, .15);
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, #ed1c24, #c81017);
+        border: none;
+        border-radius: 999px;
+        padding: 10px;
+        font-weight: 600;
+        color: #fff;
+        transition: .2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-register:hover {
+        background: linear-gradient(135deg, #d71920, #b51218);
+        color: #fff;
+    }
+
+    .btn-register:focus,
+    .btn-register:active {
+        background: linear-gradient(135deg, #d71920, #b51218);
+        box-shadow: 0 0 0 0.2rem rgba(237, 28, 36, .2);
+    }
+
+    .form-check-label {
+        color: #495057;
+    }
+
+    .form-check-input:checked {
+        background-color: #ed1c24;
+        border-color: #ed1c24;
+    }
+
+    .register-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        border: none;
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-card">
+
+        <!-- Logo -->
+        <div class="text-center mb-3">
+            <img src="~/images/Logo.png" class="logo" />
+        </div>
+
+        <h3 class="text-center mb-4 title">
+            สมัครสมาชิก
+        </h3>
+
+        <form asp-controller="Electrical" asp-action="Register">
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">ชื่อผู้ใช้</label>
+                <input type="text" asp-for="RegisName" class="form-control" placeholder="ชื่อผู้ใช้">
+            </div>
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">อีเมลผู้ใช้</label>
+                <input type="email" asp-for="RegisEmail" class="form-control" placeholder="example@email.com">
+            </div>
+            <!-- Phone -->
+            <div class="mb-3">
+                <label class="form-label">เบอร์โทรศัพท์</label>
+                <input type="text" asp-for="RegisPhoneNumber" class="form-control" placeholder="0812345678">
+            </div>
+            <!-- Password -->
+            <div class="mb-3">
+                <label class="form-label">รหัสผ่าน</label>
+                <input type="password" asp-for="RegisPassword" class="form-control" placeholder="********">
+            </div>
+            <!-- Checkbox -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" required>
+                <label class="form-check-label">
+                    ฉันยอมรับข้อตกลงและเงื่อนไข
+                </label>
+            </div>
+            <!-- Button -->
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-register">
+                    <i class="bi bi-person-plus"></i>
+                    <span>สมัครสมาชิก</span>
+                </button>
+            </div>
+        </form>
+        @if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+    </div>
+</div>

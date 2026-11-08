@@ -1,0 +1,161 @@
+@model List<_66076431_natalee.ViewModels.HomeProductItem>
+@{
+    Layout = "_BraLayout2";
+    var allCats = ViewBag.AllCategories as List<string> ?? new List<string>();
+}
+
+<style>
+    .page-title {
+        font-weight: 700;
+        color: #5a3e2b;
+    }
+
+    .sub-text {
+        color: #888;
+        font-size: .95rem;
+    }
+
+    .summary-box {
+        background: #fff;
+        border-radius: 18px;
+        padding: 16px 18px;
+        box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        margin-bottom: 20px;
+    }
+
+    .filter-bar {
+        background: #fff;
+        border-radius: 18px;
+        padding: 16px 18px;
+        box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        margin-bottom: 20px;
+    }
+
+    .product-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        transition: .2s;
+        background: #fff;
+        height: 100%;
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0,0,0,.10);
+    }
+
+    .product-img {
+        height: 190px;
+        object-fit: cover;
+        background: #f6f6f6;
+    }
+
+    .product-name {
+        font-weight: 700;
+        color: #333;
+        min-height: 48px;
+    }
+
+    .product-category {
+        color: #888;
+        font-size: .85rem;
+    }
+
+    .old-price {
+        color: #999;
+        font-size: .9rem;
+    }
+
+    .new-price {
+        color: #c62828;
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
+
+    .buy-btn {
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    .empty-box {
+        background: #fff;
+        border-radius: 18px;
+        padding: 50px 20px;
+        text-align: center;
+        box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        color: #888;
+    }
+
+    .sale-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: .75rem;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <div class="mb-4">
+        <h3 class="page-title mb-1">สินค้า</h3>
+        <div class="sub-text">
+            หมวดหมู่: <strong>@ViewBag.Category</strong> |
+            จำนวนสินค้า: <strong>@ViewBag.TotalProducts</strong> รายการ
+        </div>
+    </div>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="empty-box">
+            <h5 class="mb-2">ไม่มีสินค้าในหมวดนี้</h5>
+            <div>ลองเลือกหมวดหมู่อื่น หรือกลับไปดูสินค้าทั้งหมด</div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var p in Model)
+            {
+                <div class="col-6 col-md-4 col-xl-3">
+                    <div class="card product-card">
+                        @if (p.DiscountPrice > 0)
+                        {
+                            <span class="badge bg-danger sale-badge">SALE</span>
+                        }
+
+                        <img src="@(string.IsNullOrEmpty(p.ImageUrl) ? "https://placehold.co/300x200/eee/555?text=No+Image" : p.ImageUrl)"
+                            class="card-img-top product-img"
+                            onerror="this.src='https://placehold.co/300x200/eee/555?text=No+Image'" />
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="product-name mb-1">@p.ProductName</div>
+                            <div class="product-category mb-2">@p.Category</div>
+
+                            @if (p.DiscountPrice > 0)
+                            {
+                                <div class="old-price mb-1">
+                                    <del>฿@p.SellPrice.ToString("N0")</del>
+                                </div>
+                                <div class="new-price mb-3">฿@p.DiscountPrice.ToString("N0")</div>
+                            }
+                            else
+                            {
+                                <div class="new-price mb-3">฿@p.SellPrice.ToString("N0")</div>
+                            }
+
+                            <a asp-controller="Electrical" asp-action="ProductDetailUser" asp-route-PID="@p.ProductId"
+                                class="btn btn-dark btn-sm w-100 mt-auto buy-btn">
+                                ดูสินค้า
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

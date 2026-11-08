@@ -1,0 +1,201 @@
+@model _66076431_natalee.ViewModels.AddAdminViewModel
+@{
+    Layout = "_BraLayout";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<style>
+    body {
+        background: #f5f5f5;
+        color: #212529;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .dash-header {
+        background: linear-gradient(135deg, #ed1c24, #c81017);
+        color: #fff;
+        padding: 24px 32px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 8px rgba(0,0,0,.18);
+        border-radius: 0 0 16px 16px;
+        margin-bottom: 24px;
+    }
+
+    .dash-header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dash-header p {
+        margin: 4px 0 0;
+        font-size: .85rem;
+        opacity: .9;
+    }
+
+    .badge-staff {
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.35);
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-size: .8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .admin-form-card {
+        border: 1px solid #e9ecef;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.06);
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .admin-form-card .card-body {
+        padding: 32px 40px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        border: 1px solid #ced4da;
+        padding: 10px 14px;
+        color: #212529;
+        box-shadow: none;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #ed1c24;
+        box-shadow: 0 0 0 .2rem rgba(237, 28, 36, .12);
+    }
+
+    .btn-back {
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-save-admin {
+        background: #ed1c24;
+        border: none;
+        color: #fff;
+        border-radius: 999px;
+        padding: 10px 22px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-save-admin:hover {
+        background: #c81017;
+        color: #fff;
+    }
+
+    .btn-save-admin:focus,
+    .btn-save-admin:active {
+        background: #c81017;
+        color: #fff;
+        box-shadow: 0 0 0 .2rem rgba(237, 28, 36, .15);
+    }
+
+    @@media (max-width: 768px) {
+        .dash-header {
+            padding: 20px 18px 18px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .dash-header h1 {
+            font-size: 1.25rem;
+        }
+
+        .admin-form-card .card-body {
+            padding: 22px 18px;
+        }
+    }
+</style>
+
+<div class="dash-header">
+    <div>
+        <h1>
+            <i class="bi bi-person-plus"></i>
+            <span>เพิ่มพนักงาน</span>
+        </h1>
+        <p>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
+    <span class="badge-staff">
+        <i class="bi bi-person-badge"></i>
+        <span>พนักงาน</span>
+    </span>
+</div>
+
+<div class="card w-100 admin-form-card">
+    <div class="card-body">
+
+        <form asp-controller="Electrical" asp-action="AddUser" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">ชื่อ-นามสกุล</label>
+                <input type="text" asp-for="AdminName" class="form-control" placeholder="กรอกชื่อ-นามสกุล">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">อีเมล</label>
+                <input type="email" asp-for="AdminEmail" class="form-control" placeholder="example@email.com">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">รหัสผ่าน</label>
+                <input type="password" asp-for="AdminPassword" class="form-control" placeholder="********">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">เบอร์โทร</label>
+                <input type="text" asp-for="AdminPhone" class="form-control" placeholder="0XXXXXXXXX">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">ตำแหน่ง</label>
+                <select asp-for="AdminRole" class="form-select">
+                    <option value="" disabled selected>เลือกตำแหน่ง</option>
+                    <option>Admin</option>
+                    <option>พนักงานขาย</option>
+                    <option>พนักงานคลัง</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4 flex-wrap gap-2">
+                <a asp-controller="Electrical" asp-action="AdminList" class="btn btn-secondary btn-back">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>ย้อนกลับ</span>
+                </a>
+
+                <button type="submit" class="btn btn-save-admin">
+                    <i class="bi bi-floppy"></i>
+                    <span>บันทึก</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

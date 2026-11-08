@@ -1,0 +1,34 @@
+@{
+  Layout = "_TestLayout";
+}
+
+@using _66076431_natalee.Models.db
+@model IEnumerable<_66076431_natalee.Models.db.Customer>
+
+<div class="table">
+  <table class="table table-bordered table-striped table-hover  text-center" >
+    <thead class="table-dark">
+      <tr>
+        <th>CusId</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>  Name</th>
+        <th>PhoneNumber</th>
+        <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+      @foreach(var item in Model)
+      {
+        <tr>
+          <td>@item.CusId</td>
+          <td>@item.CusrEmail</td>
+          <td>@item.CusPassword</td>
+          <td>@item.CusName</td>
+          <td>@item.CusPhoneNumber</td>
+          <td>@item.CusAddress</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

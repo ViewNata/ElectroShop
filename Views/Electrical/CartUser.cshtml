@@ -1,0 +1,224 @@
+@model List<_66076431_natalee.ViewModels.OrderDetailViewModel>
+@{
+    Layout = "_BraLayout2";
+}
+
+<style>
+    :root {
+        --main-red: #ed1c24;
+        --dark-red: #c81017;
+        --soft-bg: #f8f9fa;
+        --border: #e9ecef;
+        --text-dark: #212529;
+    }
+
+    body {
+        background-color: var(--soft-bg);
+    }
+
+    .cart-container {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .cart-title {
+    color: #212529; 
+    font-weight: 700;
+}
+
+    .cart-table thead {
+        background: var(--main-red);
+        color: #fff;
+    }
+
+    .cart-table tbody tr:hover {
+        background-color: #fff5f5;
+        transition: 0.2s;
+    }
+
+    .btn-qty {
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        font-weight: bold;
+    }
+
+    .btn-qty:hover {
+        background: var(--main-red);
+        color: #fff;
+        border-color: var(--main-red);
+    }
+
+    input[type="checkbox"] {
+        accent-color: var(--main-red);
+        transform: scale(1.2);
+    }
+
+    .btn-remove {
+        color: var(--main-red);
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .btn-remove:hover {
+        color: var(--dark-red);
+        text-decoration: underline;
+    }
+
+    .cart-summary {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-top: 20px;
+    }
+
+    .total-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #c82333;
+    }
+
+    .btn-checkout {
+        background: var(--main-red);
+        border: none;
+        padding: 10px 24px;
+        font-weight: 600;
+        border-radius: 10px;
+        color: #fff;
+    }
+
+    .btn-checkout:hover {
+        background: var(--dark-red);
+    }
+
+    .btn-shop {
+        background: var(--main-red);
+        border: none;
+        color: #fff;
+    }
+
+    .btn-shop:hover {
+        background: var(--dark-red);
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="cart-container">
+
+        <h4 class="mb-4 cart-title">ตะกร้าสินค้า</h4>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-muted">ตะกร้าว่างเปล่า</p>
+            <a asp-controller="Electrical" asp-action="ProductListUser" class="btn btn-shop">
+                เลือกสินค้า
+            </a>
+        }
+        else
+        {
+            <table class="table cart-table align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            <input type="checkbox" id="checkAll" /> เลือกทั้งหมด
+                        </th>
+                        <th>สินค้า</th>
+                        <th>ราคา/ชิ้น</th>
+                        <th>จำนวน</th>
+                        <th>รวม</th>
+                        <th>ลบ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="item-check" value="@item.OrderDetailId" />
+                            </td>
+                            <td>@item.ProductName</td>
+                            <td>฿@item.UnitPrice</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a asp-controller="Electrical" asp-action="UpdateQty" asp-route-OdId="@item.OrderDetailId"
+                                        asp-route-Change="-1" class="btn btn-sm btn-qty">-</a>
+
+                                    <span>@item.Quantity</span>
+
+                                    <a asp-controller="Electrical" asp-action="UpdateQty" asp-route-OdId="@item.OrderDetailId"
+                                        asp-route-Change="1" class="btn btn-sm btn-qty">+</a>
+                                </div>
+                            </td>
+                            <td>฿@item.TotalPrice</td>
+                            <td>
+                                <a asp-controller="Electrical" asp-action="RemoveFromCart" asp-route-OdId="@item.OrderDetailId"
+                                        class="btn-remove">
+                                    ลบ
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="cart-summary text-end">
+                <h5>
+                    รวม: ฿<span id="selectedTotal" class="total-price">0</span>
+                </h5>
+
+                <a id="btnCheckout" href="#" class="btn btn-checkout">
+                    ดำเนินการชำระเงิน
+                </a>
+            </div>
+        }
+
+    </div>
+</div>
+
+<script>
+    document.getElementById('checkAll')?.addEventListener('change', function () {
+        document.querySelectorAll('.item-check').forEach(c => c.checked = this.checked);
+        updateTotal();
+    });
+
+    document.querySelectorAll('.item-check').forEach(c =>
+        c.addEventListener('change', updateTotal)
+    );
+
+    function updateTotal() {
+        let total = 0;
+
+        document.querySelectorAll('.item-check:checked').forEach(function (c) {
+            let row = c.closest('tr');
+            let txt = row.cells[4].innerText.replace('฿', '').replace(/,/g, '');
+            total += parseInt(txt) || 0;
+        });
+
+        document.getElementById('selectedTotal').innerText = total.toLocaleString();
+    }
+
+    document.getElementById('btnCheckout')?.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        let selectedIds = [];
+        document.querySelectorAll('.item-check:checked').forEach(function (c) {
+            selectedIds.push(c.value);
+        });
+
+        if (selectedIds.length === 0) {
+            alert('กรุณาเลือกสินค้าอย่างน้อย 1 รายการ');
+            return;
+        }
+
+        let orderId = '@ViewBag.OrderId';
+        let url = '/Electrical/CheckoutUser?orderId=' + orderId + '&selectedIds=' + selectedIds.join(',');
+
+        window.location.href = url;
+    });
+</script>
+

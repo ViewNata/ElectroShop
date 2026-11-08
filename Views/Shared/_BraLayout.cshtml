@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-left: 8px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: #212529;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .sidebar-link:hover {
+            background: #fff5f5;
+            color: #ed1c24;
+            text-decoration: none;
+        }
+
+        .sidebar-link i {
+            font-size: 1rem;
+        }
+
+        .sidebar-title {
+            margin-bottom: 12px;
+            color: #6c757d;
+            font-weight: 700;
+        }
+
+        .sidebar-logout {
+            color: #dc3545;
+        }
+
+        .sidebar-logout:hover {
+            background: #fff1f1;
+            color: #b02a37;
+        }
+    </style>
+</head>
+
+<body>
+
+    @{
+        var adminRole = Context.Session.GetString("AdminRole");
+        bool isAdmin = adminRole == "Admin";
+        bool isWarehouse = adminRole == "พนักงานคลัง";
+        bool isFinance = adminRole == "พนักงานขาย";
+    }
+
+    <div class="container-fluid">
+        <div class="row min-vh-100">
+            <!-- Sidebar -->
+            <div class="col-3 border-end bg-light">
+                <div class="p-4">
+
+                    <div class="sidebar-title">Dashboard</div>
+                    <a asp-controller="Electrical" asp-action="Dashboard" class="sidebar-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <hr>
+
+                    @if (isAdmin || isWarehouse)
+                    {
+                        <div class="sidebar-title">คลังสินค้า</div>
+
+                        <a asp-controller="Electrical" asp-action="AddProduct" class="sidebar-link">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>เพิ่มสินค้า</span>
+                        </a>
+
+                        <a asp-controller="Electrical" asp-action="ProductList" class="sidebar-link">
+                            <i class="bi bi-box-seam"></i>
+                            <span>สินค้าทั้งหมด</span>
+                        </a>
+
+                        <a asp-controller="Electrical" asp-action="ProductOrderDetail" class="sidebar-link">
+                            <i class="bi bi-card-checklist"></i>
+                            <span>รายละเอียดออเดอร์</span>
+                        </a>
+
+                        <hr>
+                    }
+
+                    @if (isAdmin || isFinance)
+                    {
+                        <div class="sidebar-title">การเงิน</div>
+
+                        <a asp-controller="Electrical" asp-action="OrderList" class="sidebar-link">
+                            <i class="bi bi-receipt"></i>
+                            <span>ดูออเดอร์</span>
+                        </a>
+
+                        <hr>
+                    }
+
+                    @if (isAdmin)
+                    {
+                        <div class="sidebar-title">จัดการลูกค้า-พนักงาน</div>
+
+                        <a asp-controller="Electrical" asp-action="UserList" class="sidebar-link">
+                            <i class="bi bi-people"></i>
+                            <span>จัดการลูกค้า</span>
+                        </a>
+
+                        <a asp-controller="Electrical" asp-action="AdminList" class="sidebar-link">
+                            <i class="bi bi-person-badge"></i>
+                            <span>จัดการพนักงาน</span>
+                        </a>
+
+                        <hr>
+                    }
+
+                    <a asp-controller="Electrical" asp-action="Logout" class="sidebar-link sidebar-logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>ออกจากระบบ</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div class="col-9">
+                <div class="p-4">
+                    @RenderBody()
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

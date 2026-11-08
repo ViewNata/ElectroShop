@@ -1,0 +1,29 @@
+@model IEnumerable<_66076431_natalee.ViewModels.Lab9UserViewModel>
+<div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>UserId</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Password</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in Model)
+      {
+        <tr>
+          <td>@item.UserId</td>
+          <td>@item.Name</td>
+          <td>@item.LastName</td>
+          <td>@item.Password</td>
+          <td><a asp-route-UID="@item.UserId" asp-action="Lab10" asp-controller="Account">Edit</a></td>
+          <td><a asp-route-UID="@item.UserId" asp-action="Lab10D" asp-controller="Account">Delete</a></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  </div>
+

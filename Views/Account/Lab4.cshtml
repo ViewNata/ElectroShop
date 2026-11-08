@@ -1,0 +1,126 @@
+@{
+  Layout = "_TestLayout";
+}
+
+
+<table class="table table-bordered table-striped table-$pink-500 table-hover">
+  <thead>
+    <tr class="table-warning">
+      <th>ลำดับ</th>
+      <th>ชื่อ</th>
+      <th>เบอร์โทรศัพท์</th>
+      <th>Email</th>
+      <th>ที่อยู่</th>
+      <th>รหัสผ่าน</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>อำนาจ</td>
+      <td>081-234-5678</td>
+      <td>demo@example.com</td>
+      <td>123 ถนนสุขุมวิท แขวงบางซื่อ เขตบางซื่อ กรุงเทพฯ 10800</td>
+      <td>tt123456</td>
+    </tr>
+
+    <tr>
+      <td>2</td>
+      <td>นาตาว้า</td>
+      <td>081-234-5679</td>
+      <td>demo@example.com</td>
+      <td>456 ถนนสุขุมวิท แขวงบางซื่อ เขตบางซื่อ กรุงเทพฯ 10800</td>
+      <td>nn123456</td>
+    </tr>
+
+    <tr>
+      <td>3</td>
+      <td>พบประ</td>
+      <td>081-234-5680</td>
+      <td>demo@example.com</td>
+      <td>789 ถนนสุขุมวิท แขวงบางซื่อ เขตบางซื่อ กรุงเทพฯ 10800</td>
+      <td>pp123456</td>
+    </tr>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <th colspan="2">รวม 4 แถว</th>
+    </tr>
+  </tfoot>
+</table>
+
+
+
+
+<div class="container">
+  <div class="card">
+    <h3 class="card-header bg-danger text-success">
+      ตัวอย่างการ์ด
+    </h3>
+    <div class="card-body">
+      <h3 class="card-title">ข้อมูลการ์ด</h3>
+      <p class="card-text">ส่วนเนื้อหาของการ์ด</p>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row g-3">
+      <div class="col-12 col-md-4">
+        <div class="card h-100">
+          <h3 class="card-header">ส่วนหัวข้อ card 1</h3>
+            <div class="card-body">
+              <h3>ส่วน Title ของ card 1</h3>
+              <p class="card-text">
+                นี่คือเนื้อหาของ card 1
+              </p>
+            </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="card h-100">
+          <h3 class="card-header">ส่วนหัวข้อ card 2</h3>
+            <div class="card-body">
+              <h3>ส่วน Title ของ card 2</h3>
+              <p class="card-text">
+                นี่คือเนื้อหาของ card 2
+              </p>
+            </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="card h-100">
+          <h3 class="card-header">ส่วนหัวข้อ card 3</h3>
+            <div class="card-body">
+              <h3>ส่วน Title ของ card 3</h3>
+              <p class="card-text">
+                นี่คือเนื้อหาของ card 3
+              </p>
+            </div>
+        </div>
+      </div>
+  </div>
+
+    <br>
+    <form asp-controller="Account" asp-action="lab4">
+      <div class="mb-3">
+        <label class="form-label">ชื่อผู้ใช้:</label>
+        <input type="text" class="from-control">
+      </div>
+
+      <br>
+      <div class="mb-3">
+        <label class="form-label">Password:</label>
+        <input type="password" class="form-control">
+      </div>
+    
+      <div class="mb-3">
+        <label class="form-label">upload image:</label>
+        <input type="file" class="form-control">
+      </div>
+    </form>
+
+    <br>
+</div>

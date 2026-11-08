@@ -1,0 +1,59 @@
+@* แบบคือแบบ 1:1 *@
+@* @model _66076431_natalee.ViewModels.LabUserViewModel *@
+
+@* แบบคือแบบ 1:N หรือ List *@
+@model IEnumerable<_66076431_natalee.ViewModels.LabUserViewModel>
+<h1> Lab 5</h1>
+<div>
+  @* @Model.UserId
+  @Model.Name
+  @Model.LastName
+  @Model.Address
+  @Model.Age
+  @Model.Height
+  @Model.Weight *@
+
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>UserId</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Address</th>
+        <th>Age</th>
+        <th>Height</th>
+        <th>Weight</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @foreach (var item in Model)
+      {
+        <tr>
+          <td>@item.UserId</td>
+          <td>@item.Name</td>
+          <td>@item.LastName</td>
+          <td>@item.Address</td>
+          <td>@item.Age</td>
+          <td>@item.Height</td>
+          <td>@item.Weight</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+</div>
+
+
+@* <div>
+  <form asp-controller="Account" asp-action="Lab5">
+    UserId<input type="text" asp-for="UserId" class="form-control" />
+    Name<input type="text" asp-for="Name" class="form-control" />
+    LastName<input type="text" asp-for="LastName" class="form-control" />
+    <button type="submit" >Submit</button>
+  </form>
+  @ViewBag.UserId 
+  @ViewBag.Name
+  @ViewBag.LastName 
+</div> *@

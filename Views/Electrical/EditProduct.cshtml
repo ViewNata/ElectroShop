@@ -1,0 +1,106 @@
+@model _66076431_natalee.ViewModels.AddProductViewModel
+@{
+    Layout = "_BraLayout";
+}
+<style>
+    .dash-header { background:linear-gradient(135deg,#ed1c24,#c81017); color:#fff;
+                    padding:24px 32px 20px; display:flex; align-items:center;
+                    justify-content:space-between; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+    .dash-header h1 { margin:0; font-size:1.5rem; font-weight:700; }
+    .dash-header p  { margin:4px 0 0; font-size:.85rem; opacity:.85; }
+    .badge-staff { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4);
+                    border-radius:20px; padding:4px 14px; font-size:.8rem; font-weight:600; }
+</style>
+
+<div class="dash-header">
+    <div>
+        <h1>✏️ แก้ไขสินค้า</h1>
+        <p>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
+    <span class="badge-staff">👤 พนักงาน</span>
+</div>
+
+<div class="card w-100">
+    <div class="card-body px-5 py-4">
+
+        <form asp-controller="Electrical" asp-action="EditProduct" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ProductId" />
+
+            <div class="mb-3">
+                <label class="form-label">ชื่อสินค้า</label>
+                <input type="text" asp-for="ProductName" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">แบรนด์</label>
+                <input type="text" asp-for="Brand" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">หมวดสินค้า</label>
+                <select asp-for="Category" class="form-select">
+                    <option>ทีวี</option>
+                    <option>แอร์</option>
+                    <option>ตู้เย็น</option>
+                    <option>เครื่องซักผ้า</option>
+                    <option>เครื่องครัว</option>
+                    <option>หลอดไฟ</option>
+                    <option>อุปกรณ์ไฟฟ้า</option>
+                    <option>เครื่องมือช่าง</option>
+                </select>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">จำนวนสินค้า</label>
+                    <input type="number" asp-for="Quantity" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">หน่วย</label>
+                    <input type="text" asp-for="Unit" class="form-control">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">ต้นทุน (บาท)</label>
+                    <input type="number" asp-for="CostPrice" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">ราคาขาย (บาท)</label>
+                    <input type="number" asp-for="SellPrice" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">ราคาลด (บาท)</label>
+                    <input type="number" asp-for="DiscountPrice" class="form-control">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">การรับประกัน</label>
+                <input type="text" asp-for="Warranty" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">รายละเอียดสินค้า</label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">รูปภาพสินค้า</label>
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" style="height:80px;border-radius:6px;" class="mb-2 d-block" />
+                }
+                <input type="hidden" asp-for="ImageUrl" />
+                <input type="file" asp-for="ImageFile" class="form-control" accept="image/*">
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Electrical" asp-action="ProductList" class="btn btn-secondary">ย้อนกลับ</a>
+                <button type="submit" class="btn btn-success px-4">บันทึก</button>
+            </div>
+
+        </form>
+    </div>
+</div>

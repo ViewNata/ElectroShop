@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " — โฮมการ์ด" : "โฮมการ์ด")</title>
+
+    <script type="importmap"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_66076431_natalee.styles.css" asp-append-version="true" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+    :root {
+        --hg-primary: #ed1c24;
+        --hg-primary-dark: #c81017;
+        --hg-accent: #cccccc;
+        --hg-bg: #f8f9fa;
+        --hg-text-dark: #212529;
+        --hg-muted: #6c757d;
+        --hg-border: #e9ecef;
+    }
+
+    body {
+        background-color: var(--hg-bg);
+        font-family: 'Segoe UI', sans-serif;
+        color: var(--hg-text-dark);
+        margin: 0;
+    }
+
+    .hg-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Top bar */
+    .hg-topbar {
+        background: #ffffff;
+        color: var(--hg-text-dark);
+        font-size: .85rem;
+        border-bottom: 1px solid var(--hg-border);
+    }
+
+    .hg-topbar i {
+        color: var(--hg-primary);
+    }
+
+    .hg-topbar a {
+        color: var(--hg-text-dark);
+        text-decoration: none;
+    }
+
+    .hg-topbar a:hover {
+        color: var(--hg-primary);
+    }
+
+    /* Navbar */
+    .hg-navbar {
+        background: #ffffff;
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+        box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        border-bottom: 1px solid var(--hg-border);
+    }
+
+    .hg-logo {
+        text-decoration: none;
+        color: var(--hg-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .hg-logo img {
+        height: 44px;
+    }
+
+    .hg-logo span {
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: -.4px;
+        color: var(--hg-primary);
+        white-space: nowrap;
+    }
+
+    /* Search */
+    .hg-search-wrap {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .hg-search-group {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0,0,0,.08);
+        background: #f3f3f3;
+        border: 1px solid #ececec;
+    }
+
+    .hg-search-group .form-select,
+    .hg-search-group .form-control {
+        border: 0;
+        box-shadow: none !important;
+        background: #f3f3f3;
+        color: var(--hg-text-dark);
+    }
+
+    .hg-search-group .form-select {
+        max-width: 140px;
+    }
+
+    .hg-search-btn {
+        background: var(--hg-accent);
+        color: #212529;
+        border: 0;
+        font-weight: 600;
+    }
+
+    .hg-search-btn:hover {
+        background: var(--hg-primary);
+        color: #ffffff;
+    }
+
+    .hg-search-btn:focus,
+    .hg-search-btn:active {
+        background: var(--hg-primary);
+        color: #ffffff;
+        box-shadow: none !important;
+    }
+
+    /* Icon links */
+    .hg-nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-shrink: 0;
+    }
+
+    .hg-icon-btn {
+        color: var(--hg-text-dark);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        font-size: .74rem;
+        transition: .2s ease;
+    }
+
+    .hg-icon-btn i {
+        font-size: 1.35rem;
+        line-height: 1;
+    }
+
+    .hg-icon-btn:hover {
+        color: var(--hg-primary);
+        transform: translateY(-1px);
+    }
+
+    .hg-icon-btn:focus,
+    .hg-icon-btn:active {
+        color: var(--hg-primary);
+    }
+
+    /* Category bar */
+    .hg-catbar {
+        background: #ffffff;
+        border-bottom: 1px solid var(--hg-border);
+    }
+
+    .hg-catbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .hg-catbar ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hg-catbar a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--hg-text-dark);
+        text-decoration: none;
+        padding: 12px 16px;
+        white-space: nowrap;
+        font-size: .9rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition: .2s ease;
+    }
+
+    .hg-catbar a:hover {
+        color: var(--hg-primary);
+        background: #fff5f5;
+        border-bottom-color: var(--hg-primary);
+    }
+
+    .hg-catbar a:focus,
+    .hg-catbar a:active {
+        color: var(--hg-primary);
+        background: #fff5f5;
+        border-bottom-color: var(--hg-primary);
+    }
+
+    /* Cards */
+    .hg-cat-card,
+    .hg-prod-card {
+        transition: .2s ease;
+    }
+
+    .hg-cat-card:hover,
+    .hg-prod-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.1) !important;
+    }
+
+    /* Footer */
+    .hg-footer {
+        background: #ffffff;
+        color: var(--hg-text-dark);
+        margin-top: 48px;
+        border-top: 1px solid var(--hg-border);
+    }
+
+    .hg-footer h6 {
+        color: var(--hg-primary);
+        font-weight: 700;
+    }
+
+    .hg-footer a {
+        color: var(--hg-text-dark);
+        text-decoration: none;
+        display: block;
+        margin-bottom: 6px;
+        font-size: .9rem;
+    }
+
+    .hg-footer a:hover {
+        color: var(--hg-primary);
+    }
+
+    .hg-footer-bottom {
+        border-top: 1px solid var(--hg-border);
+        color: var(--hg-muted);
+        font-size: .82rem;
+    }
+
+    @@media (max-width: 991.98px) {
+        .hg-logo span {
+            font-size: 1.1rem;
+        }
+
+        .hg-search-group .form-select {
+            max-width: 110px;
+        }
+
+        .hg-nav-icons {
+            gap: 12px;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .hg-navbar-main {
+            gap: 12px;
+        }
+
+        .hg-search-wrap {
+            order: 3;
+            width: 100%;
+        }
+
+        .hg-nav-icons {
+            margin-left: auto;
+        }
+
+        .hg-icon-btn span:last-child {
+            display: none;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="hg-topbar py-2">
+        <div class="hg-container d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-3">
+                <span><i class="bi bi-telephone-fill me-1"></i> 02-XXX-XXXX</span>
+                <span class="d-none d-md-inline">|</span>
+                <span><i class="bi bi-clock-fill me-1"></i> จันทร์–อาทิตย์ 08.00–20.00 น.</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <a asp-controller="Electrical" asp-action="Login">เข้าสู่ระบบ</a>
+                <a asp-controller="Electrical" asp-action="Register">สมัครสมาชิก</a>
+                <a class="nav-link text-danger" asp-controller="Electrical" asp-action="Logout">ออกจากระบบ</a>
+                <span><i class="bi bi-globe2 me-1"></i>TH</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="hg-navbar py-3">
+        <div class="hg-container">
+            <div class="d-flex align-items-center hg-navbar-main">
+                <a class="hg-logo me-3" asp-controller="Electrical" asp-action="Home">
+                    <img src="~/images/Logo.png" alt="โฮมการ์ด" onerror="this.style.display='none'" />
+                    <span>โฮมการ์ด</span>
+                </a>
+
+                <div class="hg-search-wrap">
+                    <div class="input-group hg-search-group">
+                        <select class="form-select">
+                            <option>ทั้งหมด</option>
+                            <option>ทีวี</option>
+                            <option>แอร์</option>
+                            <option>ตู้เย็น</option>
+                            <option>เครื่องซักผ้า</option>
+                            <option>หลอดไฟ</option>
+                            <option>เครื่องมือช่าง</option>
+                        </select>
+
+                        <input type="search" class="form-control" placeholder="ค้นหาสินค้า เช่น Samsung, LG, Panasonic..." />
+
+                        <button class="btn hg-search-btn" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="hg-nav-icons ms-3">
+                    <a asp-controller="Electrical" asp-action="CartUser" class="hg-icon-btn">
+                        <i class="bi bi-cart3"></i>
+                        <span>ตะกร้า</span>
+                    </a>
+
+                    <a asp-controller="Electrical" asp-action="OrderTrackUser" class="hg-icon-btn d-none d-md-flex">
+                        <i class="bi bi-box-seam"></i>
+                        <span>ออเดอร์</span>
+                    </a>
+
+                    <a asp-controller="Electrical" asp-action="ProfileUser" class="hg-icon-btn">
+                        <i class="bi bi-person-circle"></i>
+                        <span>บัญชี</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CATEGORY BAR -->
+    <div class="hg-catbar">
+        <div class="hg-container">
+            <ul>
+                <li>
+                    <a asp-controller="Electrical"asp-action="ProductListUser">
+                        <i class="bi bi-grid"></i> ทั้งหมด
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="ทีวี">
+                        <i class="bi bi-tv"></i> ทีวี
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="แอร์">
+                        <i class="bi bi-snow"></i> แอร์
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="ตู้เย็น">
+                        <i class="bi bi-door-closed"></i> ตู้เย็น
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="เครื่องซักผ้า">
+                        <i class="bi bi-droplet-half"></i> เครื่องซักผ้า
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="เครื่องครัว">
+                        <i class="bi bi-basket2"></i> เครื่องครัว
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="หลอดไฟ">
+                        <i class="bi bi-lightbulb"></i> หลอดไฟ
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="อุปกรณ์ไฟฟ้า">
+                        <i class="bi bi-plug"></i> อุปกรณ์ไฟฟ้า
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Electrical" asp-action="ProductListUser" asp-route-category="เครื่องมือช่าง">
+                        <i class="bi bi-wrench-adjustable-circle"></i> เครื่องมือช่าง
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- PROMO BAR -->
+    <div style="background:#fff8f0; border-bottom:1px solid #ffe0b2;">
+        <div class="hg-container">
+            <div class="d-flex align-items-center gap-4 overflow-auto py-2" style="scrollbar-width:none; white-space:nowrap; font-size:.82rem;">
+                <span class="text-danger fw-bold flex-shrink-0">🔥 โปรโมชั่น</span>
+                <span class="flex-shrink-0">🏷 ซื้อครบ 20,000 รับส่วนลด 5%</span>
+                <span class="text-muted flex-shrink-0">|</span>
+                <span class="flex-shrink-0">🏦 ชำระผ่านธนาคาร รับส่วนลด 3%</span>
+                <span class="text-muted flex-shrink-0">|</span>
+                <span class="flex-shrink-0">⚡ Flash Sale ลด ฿100 ทันที</span>
+                <span class="text-muted flex-shrink-0">|</span>
+                <span class="flex-shrink-0">🎁 สมาชิกใหม่ ลด ฿200 order แรก</span>
+                <span class="text-muted flex-shrink-0">|</span>
+                <span class="flex-shrink-0">👑 ซื้อครบ 50,000 รับส่วนลด 10%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE CONTENT -->
+    @RenderBody()
+
+    <!-- FOOTER -->
+    <footer class="hg-footer pt-5 pb-3">
+        <div class="hg-container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <h6>โฮมการ์ด</h6>
+                    <p class="small mb-0" style="color: rgba(255,255,255,.8); line-height:1.7;">
+                        ศูนย์รวมเครื่องใช้ไฟฟ้าคุณภาพ<br />
+                        ราคาดีที่สุด
+                    </p>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <h6>บริการลูกค้า</h6>
+                    <a href="#">ติดต่อเรา</a>
+                    <a href="#">นโยบายคืนสินค้า</a>
+                    <a href="#">FAQ</a>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <h6>เกี่ยวกับเรา</h6>
+                    <a href="#">เกี่ยวกับบริษัท</a>
+                    <a href="#">สาขาของเรา</a>
+                    <a href="#">ร่วมงานกับเรา</a>
+                </div>
+
+                <div class="col-12 col-lg-3">
+                    <h6>ช่องทางชำระเงิน</h6>
+                    <p class="small mb-0" style="color: rgba(255,255,255,.8); line-height:1.9;">
+                        <i class="bi bi-credit-card-2-front me-2"></i>บัตรเครดิต / เดบิต<br />
+                        <i class="bi bi-qr-code me-2"></i>QR Code / พร้อมเพย์<br />
+                        <i class="bi bi-cash-stack me-2"></i>เงินสด
+                    </p>
+                </div>
+            </div>
+
+            <div class="hg-footer-bottom text-center mt-4 pt-3">
+                © 2025 โฮมการ์ด — ระบบจัดการร้านขายเครื่องใช้ไฟฟ้า | CSI402 | 66076431 Natalee
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

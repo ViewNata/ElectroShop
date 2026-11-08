@@ -1,0 +1,194 @@
+@model List<_66076431_natalee.ViewModels.OrderTrackViewModel>
+@{
+    Layout = "_BraLayout2";
+}
+
+<style>
+    :root {
+        --main-red: #ed1c24;
+        --dark-red: #c81017;
+        --soft-bg: #f8f9fa;
+        --border: #e9ecef;
+        --text-dark: #212529;
+    }
+
+    body { background-color: var(--soft-bg); }
+
+    .order-container {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+
+    .order-title { font-weight: 700; color: var(--text-dark); }
+
+    .order-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: 0.2s;
+    }
+
+    .order-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+    .order-header {
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+    }
+
+    .order-no { font-weight: 600; }
+
+    .order-total {
+        color: var(--main-red);
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .product-name { font-weight: 500; }
+
+    .btn-shop { background: var(--main-red); border: none; color: #fff; }
+    .btn-shop:hover { background: var(--dark-red); }
+
+    .badge-soft-success  { background: #d1e7dd; color: #0f5132; }
+    .badge-soft-info     { background: #cff4fc; color: #055160; }
+    .badge-soft-warning  { background: #fff3cd; color: #664d03; }
+    .badge-soft-secondary{ background: #e2e3e5; color: #41464b; }
+</style>
+
+<div class="container mt-4">
+    <div class="order-container">
+
+        <h4 class="mb-4 order-title">
+            <i class="bi bi-bag-check"></i> ออเดอร์ของฉัน
+        </h4>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="text-muted">ยังไม่มีคำสั่งซื้อที่กำลังดำเนินการ</p>
+            <a asp-controller="Electrical" asp-action="ProductListUser" class="btn btn-shop">
+                เลือกสินค้า
+            </a>
+        }
+        else
+        {
+            @foreach (var order in Model)
+            {
+                var badgeClass = order.OrderStatus == "ส่งสำเร็จ"   ? "badge-soft-success"   :
+                                order.OrderStatus == "กำลังจัดส่ง" ? "badge-soft-info"      :
+                                order.OrderStatus == "รอจัดส่ง"    ? "badge-soft-warning"   :
+                                                                    "badge-soft-secondary";
+
+                <div class="card order-card mb-3">
+                    <div class="card-body">
+
+                        <!-- Header: เลขออเดอร์ + สถานะ -->
+                        <div class="d-flex justify-content-between align-items-center order-header">
+                            <div class="order-no">คำสั่งซื้อ #@order.OrderNo</div>
+                            <span class="badge @badgeClass">@order.OrderStatus</span>
+                        </div>
+
+                        <!-- รายการสินค้า -->
+                        @foreach (var d in order.Details)
+                        {
+                            <div class="row align-items-center mb-2">
+                                <div class="col-md-8">
+                                    <div class="product-name">@d.ProductName</div>
+                                    <small class="text-muted">จำนวน: @d.Quantity ชิ้น</small>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <strong>฿@d.TotalPrice.ToString("N0")</strong>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- ส่วนลด (แสดงครั้งเดียวใต้รายการสินค้า) -->
+                        @if (order.Discount > 0)
+                        {
+                            <div class="text-end">
+                                <small class="text-success">
+                                    <i class="bi bi-tag"></i> ส่วนลด: ลด ฿@order.Discount.ToString("N0")
+                                </small>
+                            </div>
+                        }
+
+                        <hr>
+
+                        <!-- หมายเหตุพนักงาน -->
+                        @if (!string.IsNullOrEmpty(order.RejectNote) && order.OrderStatus != "ยกเลิก")
+                        {
+                            <div class="alert alert-warning py-2 mb-2">
+                                <strong>แจ้งจากพนักงาน:</strong> @order.RejectNote
+                            </div>
+                        }
+
+                        <!-- Timeline สถานะ -->
+                        @{
+                            var steps = new[] { "รอชำระ", "รอตรวจสอบ", "รอจัดส่ง", "กำลังจัดส่ง", "ส่งสำเร็จ" };
+                            int currentStep = Array.IndexOf(steps, order.OrderStatus);
+                        }
+                        @if (currentStep >= 0)
+                        {
+                            <div class="d-flex align-items-center justify-content-between mb-3 mt-2 px-1">
+                                @for (int i = 0; i < steps.Length; i++)
+                                {
+                                    bool done     = i < currentStep;
+                                    bool active   = i == currentStep;
+                                    string dotColor   = done || active ? "#ed1c24" : "#dee2e6";
+                                    string textColor  = done || active ? "#ed1c24" : "#adb5bd";
+                                    string fontWeight = active ? "700" : "400";
+                                    <div class="text-center" style="flex:1; position:relative;">
+                                        @if (i > 0)
+                                        {
+                                            string lineColor = i <= currentStep ? "#ed1c24" : "#dee2e6";
+                                            <div style="position:absolute; top:9px; right:50%; width:100%; height:2px; background:@lineColor; z-index:0;"></div>
+                                        }
+                                        <div style="width:18px; height:18px; border-radius:50%; background:@dotColor; margin:0 auto 4px; position:relative; z-index:1;"></div>
+                                        <div style="font-size:.65rem; color:@textColor; font-weight:@fontWeight; line-height:1.2;">@steps[i]</div>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <!-- วันที่ + ขนส่ง + ราคารวม -->
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    วันที่สั่งซื้อ: @order.OrderDate.ToString("dd/MM/yyyy")
+                                </small>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                @if (!string.IsNullOrEmpty(order.ShippingMethod))
+                                {
+                                    <div>
+                                        <small class="text-muted">
+                                            ขนส่ง: <strong>@order.ShippingMethod</strong>
+                                        </small>
+                                    </div>
+                                }
+                                <div class="order-total">฿@order.TotalPrice.ToString("N0")</div>
+                            </div>
+                        </div>
+
+                        <!-- ปุ่มยืนยันรับสินค้า -->
+                        @if (order.OrderStatus == "กำลังจัดส่ง")
+                        {
+                            <div class="d-flex gap-2 mt-3">
+                                <a href="#" class="btn btn-sm btn-outline-secondary flex-fill">
+                                    คืนเงิน/คืนสินค้า
+                                </a>
+                                <a href="/Electrical/ConfirmReceived?orderId=@order.OrderId"
+                                    class="btn btn-sm flex-fill fw-bold"
+                                    style="background:#ed1c24; color:#fff; border-radius:8px;">
+                                    ฉันได้รับสินค้าแล้ว
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>

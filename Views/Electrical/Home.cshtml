@@ -1,0 +1,246 @@
+@model _66076431_natalee.ViewModels.HomeViewModel
+@{
+    Layout = "_BraLayout2";
+}
+
+<style>
+    .section-title {
+        font-weight: 700;
+        color: #5a3e2b;
+        margin-bottom: 18px;
+    }
+
+    .product-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+        transition: .2s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0,0,0,.10);
+    }
+
+    .product-img {
+        height: 190px;
+        object-fit: cover;
+        background: #f6f6f6;
+    }
+
+    .product-name {
+        font-weight: 700;
+        min-height: 45px;
+        color: #333;
+    }
+
+    .product-category {
+        font-size: .85rem;
+        color: #888;
+    }
+
+    .old-price {
+        color: #999;
+        font-size: .9rem;
+    }
+
+    .new-price {
+        color: #c62828;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .feature-box {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.06);
+        text-align: center;
+        height: 100%;
+    }
+
+    /* Banner */
+    .banner-img {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    @@media (max-width: 768px) {
+        .banner-img {
+            max-height: 220px;
+        }
+    }
+</style>
+
+<!-- Hero Banner -->
+<div class="container mt-4">
+    <div id="heroBanner" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="4000">
+
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroBanner" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroBanner" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroBanner" data-bs-slide-to="2"></button>
+        </div>
+
+        <div class="carousel-inner overflow-hidden">
+
+            <div class="carousel-item active">
+                <img src="@Url.Content("~/images/banner1.png")" class="d-block w-100 banner-img" />
+            </div>
+
+            <div class="carousel-item">
+                <img src="@Url.Content("~/images/banner2.png")" class="d-block w-100 banner-img" />
+            </div>
+
+            <div class="carousel-item">
+                <img src="@Url.Content("~/images/banner3.png")" class="d-block w-100 banner-img" />
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroBanner" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#heroBanner" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+
+    </div>
+</div>
+
+<!-- จุดเด่นร้าน -->
+<div class="container mb-5">
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h6 class="fw-bold">สินค้าคุณภาพ</h6>
+                <small class="text-muted">รวมสินค้าอุปกรณ์ไฟฟ้าและอิเล็กทรอนิกส์จากหลายหมวด</small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h6 class="fw-bold">เลือกดูง่าย</h6>
+                <small class="text-muted">แยกหมวดสินค้าและดูรายละเอียดสินค้าได้สะดวก</small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="feature-box">
+                <h6 class="fw-bold">ราคาคุ้มค่า</h6>
+                <small class="text-muted">มีทั้งราคาปกติและสินค้าราคาพิเศษให้เลือก</small>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- สินค้าขายดี -->
+<div class="container mb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="section-title mb-0">สินค้าขายดี</h4>
+        <a asp-controller="Electrical" asp-action="ProductListUser"
+            class="btn btn-outline-dark btn-sm rounded-pill px-3">
+            ดูทั้งหมด
+        </a>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var p in Model.BestSellerProducts)
+        {
+            <div class="col-6 col-md-3">
+                <div class="card h-100 shadow-sm product-card">
+
+                    <img src="@(string.IsNullOrEmpty(p.ImageUrl)  ? "https://placehold.co/300x200/eee/555?text=No+Image"  : p.ImageUrl)"
+                        class="card-img-top product-img"
+                        onerror="this.src='https://placehold.co/300x200/eee/555?text=No+Image'" />
+
+                    <div class="card-body d-flex flex-column">
+                        <div class="product-name">@p.ProductName</div>
+                        <div class="product-category">@p.Category</div>
+
+                        @if (p.DiscountPrice > 0)
+                        {
+                            <div class="old-price">
+                                <del>฿@p.SellPrice.ToString("N0")</del>
+                            </div>
+                            <div class="new-price mb-3">
+                                ฿@p.DiscountPrice.ToString("N0")
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="new-price mb-3">
+                                ฿@p.SellPrice.ToString("N0")
+                            </div>
+                        }
+
+                        <a asp-controller="Electrical" asp-action="ProductDetailUser" asp-route-PID="@p.ProductId"
+                            class="btn btn-dark btn-sm mt-auto rounded-pill">
+                            ดูรายละเอียด
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+<!-- สินค้าลดราคา -->
+@if (Model.DiscountProducts.Count > 0)
+{
+    <div class="container mb-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="section-title mb-0">สินค้าลดราคา</h4>
+            <a asp-controller="Electrical" asp-action="ProductListUser"
+                class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                ดูทั้งหมด
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var p in Model.DiscountProducts)
+            {
+                <div class="col-6 col-md-3">
+                    <div class="card h-100 shadow-sm product-card border border-danger-subtle">
+
+                        <img src="@(string.IsNullOrEmpty(p.ImageUrl) 
+                            ? "https://placehold.co/300x200/eee/555?text=No+Image" 
+                            : p.ImageUrl)"
+                            class="card-img-top product-img"
+                            onerror="this.src='https://placehold.co/300x200/eee/555?text=No+Image'" />
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="product-name">@p.ProductName</div>
+                            <div class="product-category">@p.Category</div>
+
+                            <div class="old-price">
+                                <del>฿@p.SellPrice.ToString("N0")</del>
+                            </div>
+                            <div class="new-price mb-3">
+                                ฿@p.DiscountPrice.ToString("N0")
+                            </div>
+
+                            <a asp-controller="Electrical" asp-action="ProductDetailUser" asp-route-PID="@p.ProductId"
+                                class="btn btn-outline-danger btn-sm mt-auto rounded-pill">
+                                ดูรายละเอียด
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+}

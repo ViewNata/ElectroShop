@@ -1,0 +1,65 @@
+@model _66076431_natalee.ViewModels.AddAdminViewModel
+@{
+    Layout = "_BraLayout";
+}
+<style>
+    .dash-header { background:linear-gradient(135deg,#ed1c24,#c81017); color:#fff;
+                    padding:24px 32px 20px; display:flex; align-items:center;
+                    justify-content:space-between; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+    .dash-header h1 { margin:0; font-size:1.5rem; font-weight:700; }
+    .dash-header p  { margin:4px 0 0; font-size:.85rem; opacity:.85; }
+    .badge-staff { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4);
+                    border-radius:20px; padding:4px 14px; font-size:.8rem; font-weight:600; }
+</style>
+
+<div class="dash-header">
+    <div>
+        <h1>✏️ แก้ไขข้อมูลพนักงาน</h1>
+        <p>@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
+    <span class="badge-staff">👤 แอดมิน</span>
+</div>
+
+<div class="card w-100">
+    <div class="card-body px-5 py-4">
+
+        <form asp-controller="Electrical" asp-action="EditAdmin" method="post">
+            <input type="hidden" asp-for="AdminId" />
+
+            <div class="mb-3">
+                <label class="form-label">ชื่อ-นามสกุล</label>
+                <input type="text" asp-for="AdminName" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">อีเมล</label>
+                <input type="email" asp-for="AdminEmail" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">รหัสผ่าน</label>
+                <input type="text" asp-for="AdminPassword" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">เบอร์โทร</label>
+                <input type="text" asp-for="AdminPhone" class="form-control">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">ตำแหน่ง</label>
+                <select asp-for="AdminRole" class="form-select">
+                    <option>Admin</option>
+                    <option>พนักงานขาย</option>
+                    <option>พนักงานคลัง</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Electrical" asp-action="AdminList" class="btn btn-secondary">ย้อนกลับ</a>
+                <button type="submit" class="btn btn-success px-4">💾 บันทึก</button>
+            </div>
+
+        </form>
+    </div>
+</div>

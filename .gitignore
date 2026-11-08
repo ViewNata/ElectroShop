@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+appsettings.Local.json
+wwwroot/slips/
+wwwroot/images/qr-contact.png
+wwwroot/images/qr.jpg

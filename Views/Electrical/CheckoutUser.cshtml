@@ -1,0 +1,148 @@
+@model List<_66076431_natalee.ViewModels.OrderDetailViewModel>
+@{
+    Layout = "_BraLayout2";
+    int subTotal = ViewBag.SubTotal ?? 0;
+    // เช็คว่าเป็น order แรกของ user ไหม
+    bool isFirstOrder = ViewBag.IsFirstOrder ?? false;
+}
+
+<div class="container mt-4 mb-5">
+    <h4 class="mb-4">💳 ชำระเงิน</h4>
+
+    <div class="row g-4">
+        <div class="col-md-7">
+            <div class="card p-4 mb-3">
+                <h6 class="fw-bold mb-3">📍 ที่อยู่จัดส่ง</h6>
+
+                <form asp-controller="Electrical" asp-action="ConfirmOrder" method="post">
+                    <input type="hidden" name="OrderId"  value="@ViewBag.OrderId" />
+                    <input type="hidden" name="Discount" id="discountInput" value="0" />
+
+                    <div class="mb-2">
+                        <label class="form-label">ชื่อ - นามสกุล</label>
+                        <input type="text" name="FullName" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">เบอร์โทรศัพท์</label>
+                        <input type="text" name="Phone" class="form-control" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">ที่อยู่จัดส่ง</label>
+                        <textarea name="Address" class="form-control" rows="2" required></textarea>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">วิธีจัดส่ง</label>
+                        <select name="ShippingMethod" class="form-select">
+                            <option>Kerry Express</option>
+                            <option>Flash Express</option>
+                            <option>J&T Express</option>
+                            <option>รับเองที่ร้าน</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">วิธีชำระเงิน</label>
+                        <select name="PaymentMethod" id="paymentSelect" class="form-select" onchange="calcDiscount()">
+                            <option>โอนเงินผ่านธนาคาร</option>
+                            <option>พร้อมเพย์</option>
+                            @* <option>เก็บเงินปลายทาง</option> *@
+                            <option>บัตรเครดิต/เดบิต</option>
+                        </select>
+                    </div>
+
+                    <!-- โปรโมชั่น -->
+                    <div class="mb-3">
+                        <label class="form-label">🎟 โปรโมชั่น</label>
+                        <select class="form-select" id="promoSelect" onchange="calcDiscount()">
+                            <option value="none">ไม่ใช้โปรโมชั่น</option>
+                            @if (subTotal >= 20000)
+                            {
+                                <option value="pct5_20000">ซื้อครบ 20,000 รับส่วนลด 5%</option>
+                            }
+                            @if (subTotal >= 50000)
+                            {
+                                <option value="pct10_50000">ซื้อครบ 50,000 รับส่วนลด 10%</option>
+                            }
+                            @if (isFirstOrder)
+                            {
+                                <option value="first200">สมาชิกใหม่ order แรก ลด ฿200</option>
+                            }
+                            <option value="flash100">Flash Sale ลด ฿100</option>
+                        </select>
+                        <small class="text-muted mt-1 d-block" id="promoNote"></small>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 fw-bold">✅ ยืนยันคำสั่งซื้อ</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- สรุป -->
+        <div class="col-md-5">
+            <div class="card p-4 shadow-sm">
+                <h6 class="fw-bold mb-3">🧾 สรุปคำสั่งซื้อ</h6>
+                <table class="table table-sm">
+                    <thead>
+                        <tr><th>สินค้า</th><th>จำนวน</th><th>รวม</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>@item.Quantity</td>
+                                <td>฿@item.TotalPrice</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <hr />
+                <div class="d-flex justify-content-between mb-1">
+                    <span>ราคาสินค้า</span>
+                    <span>฿@subTotal.ToString("N0")</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1 text-success">
+                    <span>ส่วนลด</span>
+                    <span id="discountShow">-฿0</span>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between fw-bold text-danger fs-5">
+                    <span>ยอดชำระ</span>
+                    <span id="totalShow">฿@subTotal.ToString("N0")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+var subTotal = @subTotal;
+
+function calcDiscount() {
+    var promo   = document.getElementById('promoSelect').value;
+    var payment = document.getElementById('paymentSelect').value;
+    var note    = document.getElementById('promoNote');
+    var disc    = 0;
+
+    // คำนวณส่วนลดจากโปรโมชั่น
+    if      (promo === 'pct5_20000')  disc = Math.floor(subTotal * 5  / 100);
+    else if (promo === 'pct10_50000') disc = Math.floor(subTotal * 10 / 100);
+    else if (promo === 'first200')    disc = 200;
+    else if (promo === 'flash100')    disc = 100;
+
+    // ชำระผ่านธนาคาร รับเพิ่มอีก 3%
+    var bankDisc = 0;
+    if (payment === 'โอนเงินผ่านธนาคาร') {
+        bankDisc = Math.floor(subTotal * 3 / 100);
+        note.innerText = '✅ ชำระผ่านธนาคาร รับส่วนลดเพิ่ม 3%';
+    } else {
+        note.innerText = '';
+    }
+
+    var total = disc + bankDisc;
+    document.getElementById('discountInput').value    = total;
+    document.getElementById('discountShow').innerText = '-฿' + total.toLocaleString();
+    document.getElementById('totalShow').innerText    = '฿' + (subTotal - total).toLocaleString();
+}
+</script>
